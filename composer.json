@@ -1,0 +1,42 @@
+{
+    "name": "pkgdist/pkgdist-client",
+    "description": "Client for the PKG-DIST api",
+    "type": "library",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Sebastiaan Kloos",
+            "email": "skloos@pm.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Pkgdist\\Client\\": "src/",
+            "Pkgdist\\Client\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^10|^11",
+        "composer/composer": "*"
+    },
+    "require-dev": {
+        "spatie/laravel-ray": "^1.36",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-laravel": "^2.4",
+        "orchestra/testbench": "^9.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pkgdist\\Client\\ClientServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
