@@ -15,7 +15,7 @@
             "Pkgdist\\Client\\Tests\\": "tests"
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": "^8.2",
         "illuminate/support": "^10|^11",

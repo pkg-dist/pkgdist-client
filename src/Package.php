@@ -2,46 +2,49 @@
 
 namespace Pkgdist\Client;
 
-use Composer\IO\BufferIO;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\Console\Output\OutputInterface;
+use Pkgdist\Client\Objects\Changelog;
 
 class Package
 {
-    private ?string $package = null;
+    private string $slug;
 
-    public function __construct(string $package)
+    private string $package;
+
+    private string $token;
+
+    public function __construct(string $package, string $slug, ?string $token = null)
     {
         $this->package = $package;
+        $this->slug = $slug;
+        $this->token = $token;
 
         // Boot
-        $this->setupAuth();
         $this->setupHttp();
     }
 
     public function changelogs(): Collection
     {
-        return collect();
-    }
+        $changelogs = $this->client->get('changelogs', ['license' => $this->token]);
 
-    private function setupAuth(): void
-    {
-        $io = new BufferIO('', OutputInterface::VERBOSITY_VERY_VERBOSE);
+        if (!$changelogs->status() === 200) {
+            throw new \Exception('Could not retrieve changelogs.');
+        }
 
-        $auths = $io->getAuthentications();
-
-        ray($auths);
+        return collect($changelogs->json('data'))->map(fn(array $changelog) => new Changelog($changelog));
     }
 
     private function setupHttp(): void
     {
-        $this->client = Http::baseUrl(config('pkgdist-client.endpoint'))
-            ->with();
+        $slug = $this->slug;
+        $endpoint = config('pkgdist-client.endpoint');
+
+        $this->client = Http::baseUrl("{$slug}.{$endpoint}/api");
     }
 
-    public static function load(string $package): static
+    public static function load(string $package, string $slug, string $token): static
     {
-        return new static($package);
+        return new static($package, $slug, $token);
     }
 }
