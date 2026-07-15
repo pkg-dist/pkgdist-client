@@ -40,7 +40,7 @@ class Package
         $slug = $this->slug;
         $endpoint = config('pkgdist-client.endpoint');
 
-        $this->client = Http::baseUrl("{$slug}.{$endpoint}/api");
+        $this->client = Http::baseUrl("https://{$slug}.{$endpoint}/api");
     }
 
     public static function load(string $package, string $slug, string $token): static
