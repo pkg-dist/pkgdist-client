@@ -20,7 +20,7 @@ class ClientServiceProvider extends ServiceProvider
     private function setupHttp(): void
     {
         Http::macro('pkgdist', function () {
-            return Http::baseUrl(config('pkgdist-client.url'));
+            return Http::baseUrl('https://' . config('pkgdist-client.url'));
         });
     }
 }
